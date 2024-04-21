@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    {%load static%}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{%static 'styles/styles.css'%}">
+    <title>Login Register</title>
+</head>
+<body>
+    
+
+    <div class="showcase">
+        <div class="logo-container">
+            {% if not user.is_authenticated %}
+            <img src="https://fahrschulediyar.de/wp-content/uploads/2022/02/FD_logo.svg"/>
+                <div class="content">
+                    <h1>Willkommen Fahrlehrer</h1>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="username" id="" placeholder="Benutzer">
+                        <input type="password" name="password" id="" placeholder="Passwort">
+                        <button style="background: chocolate;" type="submit" name="login">Los</button>
+                    </form>
+                    
+                        {%else%}
+                        <div class="row">
+                            <div class="row">
+                                <h1>Willkommen, {{user.username}}</h1>
+                            </div>
+                            <div></div>
+                            <div class="row">
+                                <h1> Bist Angemeldet </h1>
+                            </div>
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-danger" type="submit" name="logout">Logout</button>
+                            </form>
+                        </div>
+                        {%endif%}
+                    </div>    
+            </div>            
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</body>
+</html>

@@ -1,0 +1,40 @@
+:host {
+    align-items: center;
+}
+:root {
+	--primary-color: #3a4052;
+}
+
+.logo-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.content {
+	z-index: 3;
+}
+
+
+.logo-container img {
+	min-width: 50%;
+	min-height: 50%;
+  position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	object-fit: cover;
+}
+
+.showcase {
+	height: 120vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	color: #f08317;
+	padding: 0 20px;
+}
