@@ -28,9 +28,15 @@ def home(request):
     form = AnmeldeForms()
     pruefung = Events.objects.all()
     anzahl_prf = Events.objects.values_list("text_event", flat=True)
+    print(anzahl_prf)
+    for i in pruefung:
+        print(i.date)
     prueflinge = Prüflinge.objects.all()
+    prfl = []
     for i in prueflinge:
-        print(len(i))
+        prfl.append(i.name)
+        print(prfl)
+        print(len(prfl))
 
     if request.method =="POST":
         form = AnmeldeForms(request.POST)
@@ -38,8 +44,12 @@ def home(request):
         if form.is_valid():
             form.cleaned_data
             form.save()
-            Events.objects.filter(text_event = "2").update(text_event = "1")
-            
+            for i in anzahl_prf:
+                Events.objects.filter(date = "2024-05-09").update(text_event = i - 1)
+            # for i in pruefung:
+            #     if "date" == i.date:
+            #         Events.objects.filter(date = get date from prüfling).update(text_event = "1")
+
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)
         render(request, 'loginregister.html')         
