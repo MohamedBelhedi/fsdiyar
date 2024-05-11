@@ -21,6 +21,6 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index_view, name='loginregister'),
-    path('home/', views.home, name='home')
+    path('home/', views.home, name='home'),
 
 ]

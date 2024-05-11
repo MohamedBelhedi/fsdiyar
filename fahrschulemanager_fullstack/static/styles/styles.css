@@ -15,7 +15,7 @@
 }
 
 .content {
-	z-index: 3;
+	z-index: -1;
 }
 
 
@@ -37,4 +37,13 @@
 	text-align: center;
 	color: #f08317;
 	padding: 0 20px;
+}
+
+@media screen and (max-width: 1678px) {
+	img {
+		min-width: 50px;
+		display: flex;
+
+	}
+	
 }

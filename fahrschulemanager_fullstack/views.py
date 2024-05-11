@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import login,authenticate,logout
@@ -17,10 +18,10 @@ def index_view(request):
             return redirect("home/")
             
         else:
-            return HttpResponse("<h1>Benutzer nicht gefunden oder Passwort falsch</h1> <a href=''>zurück</a>")         
+            return HttpResponse("<h1>Benutzer nicht gefunden oder Passwort falsch</h1> <a href=''>zurück</a>")
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)
-        redirect("/")  
+        return redirect("/")
    
     return render(request, 'loginregister.html')
 
@@ -28,34 +29,43 @@ def home(request):
     form = AnmeldeForms()
     pruefung = Events.objects.all()
     anzahl_prf = Events.objects.values_list("text_event", flat=True)
-    print(anzahl_prf)
-    for i in pruefung:
-        print(i.date)
     prueflinge = Prüflinge.objects.all()
     prfl = []
     for i in prueflinge:
         prfl.append(i.name)
-        print(prfl)
-        print(len(prfl))
+    if request.method == "POST" and 'logout' in request.POST:
+        logout(request)
+        return redirect("/")
 
     if request.method =="POST":
         form = AnmeldeForms(request.POST)
-        prfform = Pruefung(request.POST)
-        if form.is_valid():
+        date  = request.POST.get('prüfungsdatum')
+        prfname = request.POST.get('name')
+        for i in anzahl_prf:
+            if i <= 1:
+                Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
+                    text_event=0)
+                return HttpResponse(f"""
+                         <h1> Keine Prüfung Mehr für den {date} melde dich bitte im Büro</h1>
+                         <a href="/home"> Zurück Zur Prüfanmeldung</a>
+                         """)
+        if prfname in prfl:
+            print(" ja keine Doppelnamen  Bitte")
+            return HttpResponse("<h1>Der Name ist Doppelt drinne</h1> <a href"">zurück</a>")
+
+        elif form.is_valid():
             form.cleaned_data
             form.save()
             for i in anzahl_prf:
-                Events.objects.filter(date = "2024-05-09").update(text_event = i - 1)
-            # for i in pruefung:
-            #     if "date" == i.date:
-            #         Events.objects.filter(date = get date from prüfling).update(text_event = "1")
+                Events.objects.filter(date = datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(text_event = i - 1)
+
+
 
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)
-        render(request, 'loginregister.html')         
+        render(request, 'loginregister.html')
     context = {
         "pruefung": pruefung,
         "form": form
         }
-    pruefung = Events.objects.all()
     return render(request, "home.html", context)
