@@ -26,7 +26,7 @@ def index_view(request):
     return render(request, 'loginregister.html')
 
 def home(request):
-    form = AnmeldeForms()
+    form = Pruefung()
     pruefung = Events.objects.all()
     anzahl_prf = Events.objects.values_list("text_event", flat=True)
     prueflinge = Prüflinge.objects.all()
@@ -37,12 +37,12 @@ def home(request):
         logout(request)
         return redirect("/")
 
-    if request.method =="POST":
-        form = AnmeldeForms(request.POST)
-        date  = request.POST.get('prüfungsdatum')
+    if request.method == "POST":
+        form = Pruefung(request.POST)
+        date = request.POST.get('prüfungsdatum')
         prfname = request.POST.get('name')
         for i in anzahl_prf:
-            if i <= 1:
+            if i == 0:
                 Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
                     text_event=0)
                 return HttpResponse(f"""
@@ -54,12 +54,14 @@ def home(request):
             return HttpResponse("<h1>Der Name ist Doppelt drinne</h1> <a href"">zurück</a>")
 
         elif form.is_valid():
-            form.cleaned_data
+            request.POST.get('name')
+            request.POST.get('bezahlt')
+            request.POST.get('prüfungsdatum')
             form.save()
+            form.cleaned_data
+
             for i in anzahl_prf:
                 Events.objects.filter(date = datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(text_event = i - 1)
-
-
 
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)

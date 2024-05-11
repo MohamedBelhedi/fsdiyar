@@ -41,7 +41,9 @@
     <div class="container">
         <form action="" id="form" method="POST">
             {% csrf_token %}
-            {{form.as_p}}
+             <span>Name</span>: {{form.name}}
+            <span>Bezahlt</span>: {{form.bezahlt}}
+            <span>Prüfungsdatum</span>: {{form.prüfungsdatum}}
             <button type="submit" class="btn btn-primary" name="anmelden">Anmelden</button>
         </form>
     </div>

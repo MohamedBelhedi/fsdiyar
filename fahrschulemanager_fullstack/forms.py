@@ -6,7 +6,7 @@ from django import forms
 
 class AnmeldeForms(forms.ModelForm):
     class Meta:
-        model = Prüflinge
+        model = Events
         fields = "__all__"
         widgets = {
             "date": DateInput(attrs={'class': 'datepicker'}, format='%d.%m.%Y'),
@@ -16,10 +16,10 @@ class AnmeldeForms(forms.ModelForm):
 
 class Pruefung(forms.ModelForm):
     class Meta:
-        model = Events
+        model = Prüflinge
         fields = "__all__"
         widgets = {
             "name": forms.TextInput(attrs={'class': 'form-control'}),
             "bezahlt": forms.TextInput(attrs={'class': 'form-control'}),
-            "prüfungsdatum": forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control'}, format='%d.%m.%Y'))
+            "prüfungsdatum": forms.DateInput(format='%d.%m.%Y')
         }
