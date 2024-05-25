@@ -21,5 +21,5 @@ class Pruefung(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(attrs={'class': 'form-control'}),
             "bezahlt": forms.TextInput(attrs={'class': 'form-control'}),
-            "prüfungsdatum": forms.DateInput(format='%d.%m.%Y')
+            "prüfungsdatum": forms.DateInput(attrs={'class': 'form-control'}, format='%d.%m.%Y')
         }

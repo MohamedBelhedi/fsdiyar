@@ -27,6 +27,7 @@ def index_view(request):
 
 def home(request):
     form = Pruefung()
+    prftexterr = ""
     pruefung = Events.objects.all()
     anzahl_prf = Events.objects.values_list("text_event", flat=True)
     prueflinge = Prüflinge.objects.all()
@@ -41,14 +42,7 @@ def home(request):
         form = Pruefung(request.POST)
         date = request.POST.get('prüfungsdatum')
         prfname = request.POST.get('name')
-        for i in anzahl_prf:
-            if i <= 1:
-                Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
-                    text_event=-1)
-                return HttpResponse(f"""
-                         <h1> Keine Prüfung Mehr für den {date} melde dich bitte im Büro</h1>
-                         <a href="/home"> Zurück Zur Prüfanmeldung</a>
-                         """)
+
         if prfname in prfl:
             print(" ja keine Doppelnamen  Bitte")
             return HttpResponse("<h1>Der Name ist Doppelt drinne</h1> <a href"">zurück</a>")
@@ -57,17 +51,32 @@ def home(request):
             request.POST.get('name')
             request.POST.get('bezahlt')
             request.POST.get('prüfungsdatum')
-            form.save()
-            form.cleaned_data
-
             for i in anzahl_prf:
-                Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(text_event=i-1)
+                Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
+                    text_event=i-1)
+                for i in anzahl_prf:
+                    if i < 1:
+                        Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
+                            text_event=0)
+                        # return HttpResponse(f"""
+                        #          <h1> Keine Prüfung Mehr für den {date} melde dich bitte im Büro</h1>
+                        #          <a href="/home"> Zurück Zur Prüfanmeldung</a>
+                        #          """)
+                        prftexterr = f"""
+                                  Keine Prüfung Mehr für den {date} melde dich bitte im Büro
+
+                                 """
+                        form.save()
+                        form._clean_form()
+
+
 
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)
         render(request, 'loginregister.html')
     context = {
         "pruefung": pruefung,
-        "form": form
+        "form": form,
+        "prftexterr": prftexterr,
         }
     return render(request, "home.html", context)
