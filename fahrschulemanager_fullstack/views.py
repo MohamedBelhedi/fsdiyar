@@ -11,7 +11,7 @@ def index_view(request):
     if request.method == "POST" and "login" in request.POST:
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username=username , password=password) 
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request,user)
             # return render(request, "home.html")
@@ -42,9 +42,9 @@ def home(request):
         date = request.POST.get('prüfungsdatum')
         prfname = request.POST.get('name')
         for i in anzahl_prf:
-            if i == 0:
+            if i <= 1:
                 Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
-                    text_event=0)
+                    text_event=-1)
                 return HttpResponse(f"""
                          <h1> Keine Prüfung Mehr für den {date} melde dich bitte im Büro</h1>
                          <a href="/home"> Zurück Zur Prüfanmeldung</a>
@@ -61,7 +61,7 @@ def home(request):
             form.cleaned_data
 
             for i in anzahl_prf:
-                Events.objects.filter(date = datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(text_event = i - 1)
+                Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(text_event=i-1)
 
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)

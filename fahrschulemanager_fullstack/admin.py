@@ -7,5 +7,5 @@ from .models import Events, Prüflinge
 admin.site.register(Events)
 @admin.register(Prüflinge)
 class Foradmin(ImportExportModelAdmin):
-    list_display=("name","bezahlt","prüfungsdatum")
+    list_display=("name", "bezahlt", "prüfungsdatum")
     pass
