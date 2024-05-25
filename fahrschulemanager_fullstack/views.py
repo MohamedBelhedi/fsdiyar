@@ -53,7 +53,7 @@ def home(request):
             request.POST.get('prüfungsdatum')
             for i in anzahl_prf:
                 Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
-                    text_event=i)
+                    text_event=i-1)
                 if prfname not in prfl and i != 0:
                     form.save()
                     form._clean_form()
@@ -63,15 +63,7 @@ def home(request):
                     if i < 1:
                         Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
                             text_event=0)
-                        # return HttpResponse(f"""
-                        #          <h1> Keine Prüfung Mehr für den {date} melde dich bitte im Büro</h1>
-                        #          <a href="/home"> Zurück Zur Prüfanmeldung</a>
-                        #          """)
-                        prftexterr = f"""
-                                  Keine Prüfung Mehr für den {date} melde dich bitte im Büro
-
-            
-                                 """
+                        prftexterr = f"""Keine Prüfung Mehr für den {date} melde dich bitte im Büro"""
 
 
     if request.method == "POST" and 'logout' in request.POST:
