@@ -32,11 +32,17 @@ def home(request):
     anzahl_prf = Events.objects.values_list("text_event", flat=True)
     prueflinge = Prüflinge.objects.all()
     prfl = []
+
+
     for i in prueflinge:
         prfl.append(i.name)
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)
         return redirect("/")
+    if request.method == "GET":
+        # date = request.POST.get('prüfungsdatum')
+        test = Events.objects.filter(date=datetime.strptime("31.05.2024", "%d.%m.%Y").strftime("%Y-%m-%d")).values_list("text_event",flat=True)
+        print(str(test.get()))
 
     if request.method == "POST":
         form = Pruefung(request.POST)
@@ -52,18 +58,21 @@ def home(request):
             request.POST.get('bezahlt')
             request.POST.get('prüfungsdatum')
             for i in anzahl_prf:
-                Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
-                    text_event=i-1)
-                if prfname not in prfl and i != 0:
-                    form.save()
-                    form._clean_form()
+                if i != 0:
+                    Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
+                        text_event=i-1)
+                    if prfname not in prfl and i != 0:
+                        form.save()
+                        form._clean_form()
+                test = Events.objects.filter(
+                    date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).values_list("text_event",
+                                                                                               flat=True).get()
+                if int(test) == 0:
+                    # Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
+                    #     text_event=0)
+                    prftexterr = f"""Keine Prüfung Mehr für den {date} melde dich bitte im Büro"""
                 else:
                     form._clean_form()
-                for i in anzahl_prf:
-                    if i < 1:
-                        Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
-                            text_event=0)
-                        prftexterr = f"""Keine Prüfung Mehr für den {date} melde dich bitte im Büro"""
 
 
     if request.method == "POST" and 'logout' in request.POST:
