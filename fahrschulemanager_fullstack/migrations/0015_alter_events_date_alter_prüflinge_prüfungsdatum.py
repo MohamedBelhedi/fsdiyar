@@ -13,11 +13,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='events',
             name='date',
-            field=models.DateField(default='09.05.2024'),
+            field=models.DateField(default='2024-05-09'),
         ),
         migrations.AlterField(
             model_name='prüflinge',
             name='prüfungsdatum',
-            field=models.DateField(default='09.05.2024'),
+            field=models.DateField(default='2024-05-09'),
         ),
     ]

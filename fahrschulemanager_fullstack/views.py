@@ -1,48 +1,40 @@
 from datetime import datetime
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from django.contrib.auth import login,authenticate,logout
+from django.contrib.auth import login, authenticate, logout
 from .forms import AnmeldeForms, Pruefung
 from .models import Events, Prüflinge
+from django.views.decorators.csrf import csrf_exempt
 
-
+@csrf_exempt
 def index_view(request):
-    text = ''
     if request.method == "POST" and "login" in request.POST:
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request,user)
-            # return render(request, "home.html")
+            login(request, user)
             return redirect("home/")
-            
         else:
             return HttpResponse("<h1>Benutzer nicht gefunden oder Passwort falsch</h1> <a href=''>zurück</a>")
+
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)
         return redirect("/")
-   
     return render(request, 'loginregister.html')
 
+@csrf_exempt
 def home(request):
     form = Pruefung()
     prftexterr = ""
     pruefung = Events.objects.all()
-    anzahl_prf = Events.objects.values_list("text_event", flat=True)
+    anzahl_prf = Events.objects.all()
     prueflinge = Prüflinge.objects.all()
-    prfl = []
+    prfl = [p.name for p in prueflinge]
 
-
-    for i in prueflinge:
-        prfl.append(i.name)
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)
         return redirect("/")
-    if request.method == "GET":
-        # date = request.POST.get('prüfungsdatum')
-        test = Events.objects.filter(date=datetime.strptime("31.05.2024", "%d.%m.%Y").strftime("%Y-%m-%d")).values_list("text_event",flat=True)
-        print(str(test.get()))
 
     if request.method == "POST":
         form = Pruefung(request.POST)
@@ -50,37 +42,44 @@ def home(request):
         prfname = request.POST.get('name')
 
         if prfname in prfl:
-            print(" ja keine Doppelnamen  Bitte")
-            return HttpResponse("<h1>Der Name ist Doppelt drinne</h1> <a href"">zurück</a>")
+            return HttpResponse("<h1>Der Name ist Doppelt drinne</h1> <a href=''>zurück</a>")
 
-        elif form.is_valid():
-            request.POST.get('name')
-            request.POST.get('bezahlt')
-            request.POST.get('prüfungsdatum')
-            for i in anzahl_prf:
-                if i != 0:
-                    Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
-                        text_event=i-1)
-                    if prfname not in prfl and i != 0:
+        if form.is_valid():
+            # Get the corresponding event for the given date
+            event_date = datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")
+            event = Events.objects.filter(date=event_date).first()
+
+            if event:
+                if event.text_event > 0:
+                    event.text_event -= 1
+                    event.save()
+
+                    if prfname not in prfl:
                         form.save()
                         form._clean_form()
-                test = Events.objects.filter(
-                    date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).values_list("text_event",
-                                                                                               flat=True).get()
-                if int(test) == 0:
-                    # Events.objects.filter(date=datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")).update(
-                    #     text_event=0)
-                    prftexterr = f"""Keine Prüfung Mehr für den {date} melde dich bitte im Büro"""
+
+                    # Check if the event's text_event is now 0
+                    if event.text_event == 0:
+                        prftexterr = f"""Keine Prüfung Mehr für den {date} melde dich bitte im Büro"""
                 else:
-                    form._clean_form()
+                    prftexterr = f"""Keine Prüfung Mehr für den {date} melde dich bitte im Büro"""
+            else:
+                prftexterr = f"""Keine Prüfung für das Datum {date} gefunden"""
 
+    # If the request is for exporting the list as JSON
+    if request.method == "GET" and "export" in request.GET:
+        prueflinge_list = []
+        for pruefling in prueflinge:
+            prueflinge_list.append({
+                "name": pruefling.name,
+                "bezahlt": pruefling.bezahlt,
+                "prüfungsdatum": pruefling.prüfungsdatum.strftime("%Y-%m-%d") if pruefling.prüfungsdatum else "YYYY-MM-DD"
+            })
+        return JsonResponse(prueflinge_list, safe=False)
 
-    if request.method == "POST" and 'logout' in request.POST:
-        logout(request)
-        render(request, 'loginregister.html')
     context = {
         "pruefung": pruefung,
         "form": form,
         "prftexterr": prftexterr,
-        }
+    }
     return render(request, "home.html", context)
