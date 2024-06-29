@@ -66,16 +66,16 @@ def home(request):
             else:
                 prftexterr = f"""Keine Prüfung für das Datum {date} gefunden"""
 
-    # If the request is for exporting the list as JSON
-    if request.method == "GET" and "export" in request.GET:
-        prueflinge_list = []
-        for pruefling in prueflinge:
-            prueflinge_list.append({
-                "name": pruefling.name,
-                "bezahlt": pruefling.bezahlt,
-                "prüfungsdatum": pruefling.prüfungsdatum.strftime("%Y-%m-%d") if pruefling.prüfungsdatum else "YYYY-MM-DD"
-            })
-        return JsonResponse(prueflinge_list, safe=False)
+    # # If the request is for exporting the list as JSON
+    # if request.method == "GET" and "export" in request.GET:
+    #     prueflinge_list = []
+    #     for pruefling in prueflinge:
+    #         prueflinge_list.append({
+    #             "name": pruefling.name,
+    #             "bezahlt": pruefling.bezahlt,
+    #             "prüfungsdatum": pruefling.prüfungsdatum.strftime("%Y-%m-%d") if pruefling.prüfungsdatum else "YYYY-MM-DD"
+    #         })
+    #     return JsonResponse(prueflinge_list, safe=False)
 
     context = {
         "pruefung": pruefung,
