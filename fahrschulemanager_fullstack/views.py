@@ -45,8 +45,8 @@ def home(request):
             return HttpResponse("<h1>Der Name ist Doppelt drinne</h1> <a href=''>zurück</a>")
 
         if form.is_valid():
-            # Get the corresponding event for the given date
-            event_date = datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")
+
+            event_date = datetime.strptime(date, "%Y-%m-%d").strftime("%Y-%m-%d")
             event = Events.objects.filter(date=event_date).first()
 
             if event:
@@ -65,17 +65,6 @@ def home(request):
                     prftexterr = f"""Keine Prüfung Mehr für den {date} melde dich bitte im Büro"""
             else:
                 prftexterr = f"""Keine Prüfung für das Datum {date} gefunden"""
-
-    # # If the request is for exporting the list as JSON
-    # if request.method == "GET" and "export" in request.GET:
-    #     prueflinge_list = []
-    #     for pruefling in prueflinge:
-    #         prueflinge_list.append({
-    #             "name": pruefling.name,
-    #             "bezahlt": pruefling.bezahlt,
-    #             "prüfungsdatum": pruefling.prüfungsdatum.strftime("%Y-%m-%d") if pruefling.prüfungsdatum else "YYYY-MM-DD"
-    #         })
-    #     return JsonResponse(prueflinge_list, safe=False)
 
     context = {
         "pruefung": pruefung,
