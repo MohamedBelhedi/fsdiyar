@@ -2,7 +2,6 @@ from django.forms import DateInput, TextInput
 from .models import Prüflinge, Events
 from django import forms
 
-
 class AnmeldeForms(forms.ModelForm):
     class Meta:
         model = Events
@@ -11,7 +10,6 @@ class AnmeldeForms(forms.ModelForm):
             "date": DateInput(attrs={'class': 'datepicker'}, format='%Y-%m-%d'),
             "text_event": TextInput(attrs={'class': 'text-event'}),
         }
-
 
 class Pruefung(forms.ModelForm):
     class Meta:
