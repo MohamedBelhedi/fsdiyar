@@ -6,11 +6,11 @@ from .models import Events, Prüflinge
 class PrüflingeResource(resources.ModelResource):
     class Meta:
         model = Prüflinge
-        fields = ('name', 'bezahlt', 'prüfungsdatum')
+        fields = ('fl','name', 'bezahlt', 'prüfungsdatum')
 
 @admin.register(Prüflinge)
 class Foradmin(ImportExportModelAdmin):
     resource_class = PrüflingeResource
-    list_display = ("name", "bezahlt", "prüfungsdatum")
+    list_display = ('fl' ,"name", "bezahlt", "prüfungsdatum")
 
 admin.site.register(Events)

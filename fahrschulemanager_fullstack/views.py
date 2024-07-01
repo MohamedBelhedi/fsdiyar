@@ -31,13 +31,15 @@ def home(request):
     anzahl_prf = Events.objects.all()
     prueflinge = Prüflinge.objects.all()
     prfl = [p.name for p in prueflinge]
+    form = Pruefung(user=request.user)
 
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)
         return redirect("/")
 
     if request.method == "POST":
-        form = Pruefung(request.POST)
+        # form = Pruefung(request.POST)
+        form = Pruefung(request.POST, user=request.user)
         date = request.POST.get('prüfungsdatum')
         prfname = request.POST.get('name')
 
