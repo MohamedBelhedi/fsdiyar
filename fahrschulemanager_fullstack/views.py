@@ -44,7 +44,7 @@ def home(request):
         prfname = request.POST.get('name')
 
         if prfname in prfl:
-            return HttpResponse("<h1>Der Name ist Doppelt drinne</h1> <a href=''>zurück</a>")
+            return HttpResponse("<h1 style='text-align: center'>Der Name ist Doppelt drinne‼️ <a href=''>zurück zu Prüfungen</a></h1>")
 
         if form.is_valid():
 

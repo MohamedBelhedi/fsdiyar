@@ -1,8 +1,4 @@
 from django.db import models
-from django.contrib.auth import get_user
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
-from django.utils.functional import SimpleLazyObject
 
 
 class Events(models.Model):
