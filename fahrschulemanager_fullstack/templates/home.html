@@ -20,6 +20,9 @@
         <div class="mb-4">
             <h1>Hallo Fahrlehrer, {{ user.username }}</h1>
             <h3>Anzahl der Prüfungen für diese Woche:</h3>
+            <div>
+                <a href="">Zu der Aktuellen Prüfung für diese Woche</a>
+            </div>
             <div class="col-12" style="display: flex; color: crimson; font-weight: bolder">
                 {{ prftexterr }}
                 <div class="col-md-2">
@@ -39,15 +42,16 @@
                 <table class="table table-dark">
                     <thead>
                         <tr>
-                            <th scope="col">Datum</th>
+                            <th scope="col">Datum am um Beginn um</th>
                             <th scope="col">Freie Prüfungen</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in pruefung %}
                         <tr>
-                            <td>{{ item.date }}</td>
+                            <td>{{ item.date }}, {{ item.uhrzeit }}</td>
                             <td>{{ item.text_event }}</td>
+                            
                         </tr>
                         {% endfor %}
                     </tbody>

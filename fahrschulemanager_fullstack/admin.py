@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-from .models import Events, Prüflinge
+from .models import Events, Prüflinge, AktuellePrüfungListe
 
 class PrüflingeResource(resources.ModelResource):
     class Meta:
@@ -14,3 +14,5 @@ class Foradmin(ImportExportModelAdmin):
     list_display = ('fl' ,"name", "bezahlt", "prüfungsdatum")
 
 admin.site.register(Events)
+
+admin.site.register(AktuellePrüfungListe)

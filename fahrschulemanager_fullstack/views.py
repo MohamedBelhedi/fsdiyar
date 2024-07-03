@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, logout
 from .forms import AnmeldeForms, Pruefung
-from .models import Events, Prüflinge
+from .models import Events, Prüflinge, AktuellePrüfungListe
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
@@ -27,6 +27,7 @@ def index_view(request):
 def home(request):
     form = Pruefung()
     prftexterr = ""
+    aktuellePrüfung = AktuellePrüfungListe.objects.all()
     pruefung = Events.objects.all()
     anzahl_prf = Events.objects.all()
     prueflinge = Prüflinge.objects.all()
