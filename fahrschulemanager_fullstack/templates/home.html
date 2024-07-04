@@ -15,14 +15,13 @@
             <form action="" method="post">
                 {% csrf_token %}
                 <button class="btn btn-danger" type="submit" name="logout">Abmelden</button>
+                <a href="/pruefungen">Zu der Aktuellen Prüfung für diese Woche</a>
             </form>
         </div>
         <div class="mb-4">
             <h1>Hallo Fahrlehrer, {{ user.username }}</h1>
             <h3>Anzahl der Prüfungen für diese Woche:</h3>
-            <div>
-                <a href="/pruefungen">Zu der Aktuellen Prüfung für diese Woche</a>
-            </div>
+          
             <div class="col-12" style="display: flex; color: crimson; font-weight: bolder">
                 {{ prftexterr }}
                 <div class="col-md-2">
