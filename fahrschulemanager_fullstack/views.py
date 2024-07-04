@@ -75,3 +75,12 @@ def home(request):
         "prftexterr": prftexterr,
     }
     return render(request, "home.html", context)
+@csrf_exempt
+def pruefung(request):
+    prüfungen = AktuellePrüfungListe.objects.all()
+
+    context = {
+        "prüfungen": prüfungen
+    }
+
+    return render(request, 'prüfungen.html', context)

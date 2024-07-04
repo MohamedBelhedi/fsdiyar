@@ -21,7 +21,7 @@
             <h1>Hallo Fahrlehrer, {{ user.username }}</h1>
             <h3>Anzahl der Prüfungen für diese Woche:</h3>
             <div>
-                <a href="">Zu der Aktuellen Prüfung für diese Woche</a>
+                <a href="/pruefungen">Zu der Aktuellen Prüfung für diese Woche</a>
             </div>
             <div class="col-12" style="display: flex; color: crimson; font-weight: bolder">
                 {{ prftexterr }}
@@ -51,7 +51,7 @@
                         <tr>
                             <td>{{ item.date }}, {{ item.uhrzeit }}</td>
                             <td>{{ item.text_event }}</td>
-                            
+
                         </tr>
                         {% endfor %}
                     </tbody>
