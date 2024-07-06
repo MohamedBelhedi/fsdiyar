@@ -28,8 +28,11 @@ DEBUG = 'RENDER' not in os.environ
 # DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['https://fsdiyar.onrender.com/']
-
+# ALLOWED_HOSTS = ['https://fsdiyar.onrender.com/']
+ALLOWED_HOSTS = []
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('https://fsdiyar.onrender.com/')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 
