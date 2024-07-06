@@ -80,6 +80,9 @@ def home(request):
 @csrf_exempt
 def pruefung(request):
     prüfungen = AktuellePrüfungListe.objects.all()
+    if request.method == "POST" and 'logout' in request.POST:
+        logout(request)
+        return redirect("/")
     if request.method == "GET":
         for datum in prüfungen:
             if date > str(datum.prüfungsdatum):
