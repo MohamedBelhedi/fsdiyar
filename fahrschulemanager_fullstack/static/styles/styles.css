@@ -54,3 +54,15 @@
                 display: flex;
             }
         }
+
+
+@media (max-width: 768px) {
+            .navbar-nav .nav-item {
+                display: block;
+                text-align: center;
+            }
+            .navbar-nav .nav-item form {
+                display: flex;
+                justify-content: center;
+            }
+        }

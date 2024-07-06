@@ -1,10 +1,10 @@
 from django.forms import DateInput, TextInput
-from .models import Prüflinge, Events
+from .models import Prüflinge, TüvTermine
 from django import forms
 
 class AnmeldeForms(forms.ModelForm):
     class Meta:
-        model = Events
+        model = TüvTermine
         fields = "__all__"
         widgets = {
             "date": DateInput(attrs={'class': 'datepicker'}, format='%Y-%m-%d'),
