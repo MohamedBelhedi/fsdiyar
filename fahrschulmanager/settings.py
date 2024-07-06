@@ -24,15 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-45++%_2#4k!%15afe(p*6wa)-jztilna6wm7ec12q(z%3dh$(0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'RENDER' not in os.environ
-# DEBUG = True
+# DEBUG = 'RENDER' not in os.environ
+DEBUG = True
 
-# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = ['https://fsdiyar.onrender.com/']
-ALLOWED_HOSTS = []
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+# ALLOWED_HOSTS = []
+# RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+# if RENDER_EXTERNAL_HOSTNAME:
+#     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 
