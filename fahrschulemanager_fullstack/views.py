@@ -6,7 +6,8 @@ from django.contrib.auth import login, authenticate, logout
 from .forms import AnmeldeForms, Pruefung
 from .models import Events, Prüflinge, AktuellePrüfungListe
 from django.views.decorators.csrf import csrf_exempt
-date=dt.datetime.today().strftime('%Y-%m-%d')
+date = dt.datetime.today().strftime('%Y-%m-%d')
+datePrf = dt.datetime.today().strftime('%Y-%m-%d')
 @csrf_exempt
 def index_view(request):
     if request.method == "POST" and "login" in request.POST:
@@ -26,21 +27,21 @@ def index_view(request):
 
 @csrf_exempt
 def home(request):
-    form = Pruefung()
     prftexterr = ""
-    aktuellePrüfung = AktuellePrüfungListe.objects.all()
     pruefung = Events.objects.all()
-    anzahl_prf = Events.objects.all()
     prueflinge = Prüflinge.objects.all()
     prfl = [p.name for p in prueflinge]
     form = Pruefung(user=request.user)
+    if request.method == 'GET':
+        for datum in pruefung:
+            if datePrf > str(datum.date):
+                pruefung.filter(date=str(datum.date)).delete()
 
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)
         return redirect("/")
 
     if request.method == "POST":
-        # form = Pruefung(request.POST)
         form = Pruefung(request.POST, user=request.user)
         date = request.POST.get('prüfungsdatum')
         prfname = request.POST.get('name')
@@ -79,10 +80,11 @@ def home(request):
 @csrf_exempt
 def pruefung(request):
     prüfungen = AktuellePrüfungListe.objects.all()
-
-    for datum in prüfungen:
-        if date > str(datum.prüfungsdatum):
-            prüfungen.filter(date=date).delete()
+    if request.method == "GET":
+        for datum in prüfungen:
+            if date > str(datum.prüfungsdatum):
+                prüfungen.filter(prüfungsdatum=str(datum.prüfungsdatum)).delete()
+                print('test', datum.prüfungsdatum, date)
 
     context = {
         "prüfungen": prüfungen

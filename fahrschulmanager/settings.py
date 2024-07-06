@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-45++%_2#4k!%15afe(p*6wa)-jztilna6wm7ec12q(z%3dh$(0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # ALLOWED_HOSTS = ['fsdiyar.azurewebsites.net']
 ALLOWED_HOSTS = ['*']
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
-CSRF_TRUSTED_ORIGINS= ['https://fsdiyar.azurewebsites.net']
+# CSRF_TRUSTED_ORIGINS= ['https://fsdiyar.azurewebsites.net']
 
 ROOT_URLCONF = 'fahrschulmanager.urls'
 
