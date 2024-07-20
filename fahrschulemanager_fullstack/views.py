@@ -1,5 +1,7 @@
 from datetime import datetime
 import datetime as dt
+
+from django.db.models import Max
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, logout
@@ -91,33 +93,47 @@ def home(request):
 
 @csrf_exempt
 def theories(request):
-    pruefungTheorie = PrüflingeTheorie.objects.all()
+    pruefungTheorie = PrüflingeTheorie.objects.all().order_by('anrufdatum', '-lernerfolg')
     theorieForm = TheorieForm()
     achtungText = ''
-    if request.method == "POST":
-        theorieForm = TheorieForm(request.POST)
-        lernerfolg = request.POST.get('lernerfolg')
-        if theorieForm.is_valid():
-            if int(lernerfolg) > 79:
-                theorieForm.save()
-            else:
-                achtungText = 'Der Schüler hat einen Lernerfolg unter 80 % Anmeldung nicht möglich'
-                print('Test')
+    highlighted_users = set()
 
-            # for datenTheorie in pruefungTheorie:
-            #     if datePrf < str(datenTheorie.anrufdatum) and datenTheorie.lernerfolg > 79 :
-            #         theorieForm.save()
-            #
-            #     else:
-            #         print('passt nicht')
+    if request.method == "POST":
+        if 'anmelden' in request.POST:
+            theorieForm = TheorieForm(request.POST)
+            lernerfolg = request.POST.get('lernerfolg')
+            if theorieForm.is_valid():
+                if int(lernerfolg) > 79:
+                    theorieForm.save()
+                else:
+                    achtungText = 'Der Schüler hat einen Lernerfolg unter 80 % Anmeldung nicht möglich'
+
+        if 'lösche' in request.POST:
+            delete_id = request.POST.get('delete_id')
+            PrüflingeTheorie.objects.filter(id=delete_id).delete()
+
+        if 'logout' in request.POST:
+            logout(request)
+            return redirect("/")
+
+    # Find the user with the highest lernerfolg for each date
+    date_max_lernerfolg = pruefungTheorie.values('anrufdatum').annotate(max_lernerfolg=Max('lernerfolg'))
+    for item in date_max_lernerfolg:
+        highlighted_user = pruefungTheorie.filter(
+            anrufdatum=item['anrufdatum'],
+            lernerfolg=item['max_lernerfolg']
+        ).first()
+        if highlighted_user:
+            highlighted_users.add(highlighted_user.id)
+
     context = {
         "pruefungTheorie": pruefungTheorie,
         "theoieForm": theorieForm,
-        "achtungText": achtungText
+        "achtungText": achtungText,
+        "highlighted_users": highlighted_users
     }
 
     return render(request, "theorie.html", context)
-
 
 @csrf_exempt
 def pruefung(request):
