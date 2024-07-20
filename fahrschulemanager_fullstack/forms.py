@@ -1,5 +1,5 @@
 from django.forms import DateInput, TextInput
-from .models import Prüflinge, TüvTermine
+from .models import Prüflinge, TüvTermine, PrüflingeTheorie
 from django import forms
 
 class AnmeldeForms(forms.ModelForm):
@@ -9,6 +9,18 @@ class AnmeldeForms(forms.ModelForm):
         widgets = {
             "date": DateInput(attrs={'class': 'datepicker'}, format='%Y-%m-%d'),
             "text_event": TextInput(attrs={'class': 'text-event'}),
+        }
+
+class TheorieForm(forms.ModelForm):
+    class Meta:
+        model = PrüflingeTheorie
+        fields = "__all__"
+        widgets = {
+            "name": TextInput(attrs={'class': 'form-control'}),
+            "vorname": TextInput(attrs={'class': 'form-control'}),
+            "lernerfolg": TextInput(attrs={'class': 'form-control'}),
+            "anrufdatum": DateInput(attrs={'class': 'form-control', 'type': 'date'}, format='%Y-%m-%d')
+
         }
 
 class Pruefung(forms.ModelForm):

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-from .models import TüvTermine, Prüflinge, AktuellePrüfungListe
+from .models import TüvTermine, Prüflinge, AktuellePrüfungListe, PrüflingeTheorie
 
 class PrüflingeResource(resources.ModelResource):
     class Meta:
@@ -21,6 +21,11 @@ class TüvTermineResource(resources.ModelResource):
         exclude = ('id',)  # Exclude the ID field
         import_id_fields = ('date',)  # Use a unique identifier field for import
 
+class TheorieResource(resources.ModelResource):
+    class meta:
+        model = PrüflingeTheorie
+        exclude = ('id',)
+        import_id_fields = ('name',)
 @admin.register(Prüflinge)
 class PrüflingeAdmin(ImportExportModelAdmin):
     resource_class = PrüflingeResource
@@ -36,3 +41,7 @@ class EventsAdmin(ImportExportModelAdmin):
     resource_class = TüvTermineResource
     list_display = ('date', 'text_event', 'uhrzeit')
 
+@admin.register(PrüflingeTheorie)
+class TheorieAdmin(ImportExportModelAdmin):
+    resource_class = TheorieResource
+    list_display = ('name', 'vorname', 'lernerfolg', 'anrufdatum')

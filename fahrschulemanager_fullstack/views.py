@@ -3,12 +3,15 @@ import datetime as dt
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, logout
-from .forms import AnmeldeForms, Pruefung
-from .models import TüvTermine, Prüflinge, AktuellePrüfungListe
+from .forms import Pruefung, TheorieForm
+from .models import TüvTermine, Prüflinge, AktuellePrüfungListe, PrüflingeTheorie
 from django.views.decorators.csrf import csrf_exempt
+
 date = dt.datetime.today().strftime('%Y-%m-%d')
 datePrf = dt.datetime.today().strftime('%Y-%m-%d')
 datePrfl = dt.datetime.today().strftime('%Y-%m-%d')
+
+
 @csrf_exempt
 def index_view(request):
     if request.method == "POST" and "login" in request.POST:
@@ -26,6 +29,7 @@ def index_view(request):
         return redirect("/")
     return render(request, 'loginregister.html')
 
+
 @csrf_exempt
 def home(request):
     prftexterr = ""
@@ -42,7 +46,6 @@ def home(request):
             if datePrfl > str(datum.prüfungsdatum):
                 prueflinge.filter(prüfungsdatum=str(datum.prüfungsdatum)).delete()
 
-
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)
         return redirect("/")
@@ -53,7 +56,8 @@ def home(request):
         prfname = request.POST.get('name')
 
         if prfname in prfl:
-            return HttpResponse("<h1 style='text-align: center'>Der Name ist Doppelt drinne‼️ <a href=''>zurück zu Prüfungen</a></h1>")
+            return HttpResponse(
+                "<h1 style='text-align: center'>Der Name ist Doppelt drinne‼️ <a href=''>zurück zu Prüfungen</a></h1>")
 
         if form.is_valid():
 
@@ -83,6 +87,38 @@ def home(request):
         "prftexterr": prftexterr,
     }
     return render(request, "home.html", context)
+
+
+@csrf_exempt
+def theories(request):
+    pruefungTheorie = PrüflingeTheorie.objects.all()
+    theorieForm = TheorieForm()
+    achtungText = ''
+    if request.method == "POST":
+        theorieForm = TheorieForm(request.POST)
+        lernerfolg = request.POST.get('lernerfolg')
+        if theorieForm.is_valid():
+            if int(lernerfolg) > 79:
+                theorieForm.save()
+            else:
+                achtungText = 'Der Schüler hat einen Lernerfolg unter 80 % Anmeldung nicht möglich'
+                print('Test')
+
+            # for datenTheorie in pruefungTheorie:
+            #     if datePrf < str(datenTheorie.anrufdatum) and datenTheorie.lernerfolg > 79 :
+            #         theorieForm.save()
+            #
+            #     else:
+            #         print('passt nicht')
+    context = {
+        "pruefungTheorie": pruefungTheorie,
+        "theoieForm": theorieForm,
+        "achtungText": achtungText
+    }
+
+    return render(request, "theorie.html", context)
+
+
 @csrf_exempt
 def pruefung(request):
     prüfungen = AktuellePrüfungListe.objects.all()

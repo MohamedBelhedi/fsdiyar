@@ -18,7 +18,14 @@ class Prüflinge(models.Model):
     def __str__(self):
         return f"Fahrlehrer: {self.fl} Name: {self.name} Prüfung am: {self.prüfungsdatum}"
 
+class PrüflingeTheorie(models.Model):
+    name = models.CharField(blank=False, max_length=255)
+    vorname = models.CharField(blank=False, max_length=255)
+    lernerfolg = models.BigIntegerField(blank=False, null=False)
+    anrufdatum = models.DateField(blank=False, null=True)
 
+    def __str__(self):
+        return f"Name: {self.name} Vorname: {self.vorname} Lernerfolg: {self.lernerfolg}  Anrufdatum: {self.anrufdatum}"
 
 class AktuellePrüfungListe(models.Model):
     fl = models.CharField(blank=False, max_length=255)
