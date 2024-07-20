@@ -115,7 +115,6 @@ def theories(request):
         if 'logout' in request.POST:
             logout(request)
             return redirect("/")
-
     # Find the user with the highest lernerfolg for each date
     date_max_lernerfolg = pruefungTheorie.values('anrufdatum').annotate(max_lernerfolg=Max('lernerfolg'))
     for item in date_max_lernerfolg:
@@ -125,6 +124,9 @@ def theories(request):
         ).first()
         if highlighted_user:
             highlighted_users.add(highlighted_user.id)
+    for datum in pruefungTheorie:
+        if datePrf > str(datum.anrufdatum):
+            PrüflingeTheorie.objects.filter(anrufdatum=datum.anrufdatum).delete()
 
     context = {
         "pruefungTheorie": pruefungTheorie,
