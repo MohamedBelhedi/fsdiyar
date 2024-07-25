@@ -11,6 +11,24 @@
         .highlight {
             background-color: yellow !important;
         }
+        .scrollable-table {
+            max-height: 250px; /* Adjust the height as needed */
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f2f2f2; /* Set a background color for the sticky header */
+            z-index: 1; /* Ensure the header is above the table body */
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
     </style>
 </head>
 <body class="d-flex justify-content-center align-items-center" style="background: #cecece">
@@ -45,7 +63,7 @@
             </div>
         </div>
         <div class="mb-4">
-            <div class="table-responsive">
+            <div class="table-responsive scrollable-table">
                 <table class="table table-dark">
                     <thead>
                         <tr>
