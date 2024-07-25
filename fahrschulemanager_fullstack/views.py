@@ -102,8 +102,15 @@ def theories(request):
         if 'anmelden' in request.POST:
             theorieForm = TheorieForm(request.POST)
             lernerfolg = request.POST.get('lernerfolg')
+            name = request.POST.get('name')
+            vorname = request.POST.get('vorname')
+
             if theorieForm.is_valid():
-                if int(lernerfolg) > 79:
+                # Check for existing entry with the same name and vorname
+                existing_entry = PrüflingeTheorie.objects.filter(name=name, vorname=vorname).first()
+                if existing_entry:
+                    achtungText = 'Schüler ist schon in der Liste'
+                elif int(lernerfolg) > 79:
                     theorieForm.save()
                 else:
                     achtungText = 'Der Schüler hat einen Lernerfolg unter 80 % Anmeldung nicht möglich'
@@ -115,6 +122,7 @@ def theories(request):
         if 'logout' in request.POST:
             logout(request)
             return redirect("/")
+
     # Find the user with the highest lernerfolg for each date
     date_max_lernerfolg = pruefungTheorie.values('anrufdatum').annotate(max_lernerfolg=Max('lernerfolg'))
     for item in date_max_lernerfolg:
@@ -124,6 +132,8 @@ def theories(request):
         ).first()
         if highlighted_user:
             highlighted_users.add(highlighted_user.id)
+
+    # Assuming datePrf is defined somewhere in your code
     for datum in pruefungTheorie:
         if datePrf > str(datum.anrufdatum):
             PrüflingeTheorie.objects.filter(anrufdatum=datum.anrufdatum).delete()
