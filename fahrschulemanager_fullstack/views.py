@@ -6,6 +6,8 @@ from django.db.models import Max
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, logout
+from pyjsparser.parser import null
+
 from .forms import Pruefung, TheorieForm
 from .models import TüvTermine, Prüflinge, AktuellePrüfungListe, PrüflingeTheorie
 from django.views.decorators.csrf import csrf_exempt
@@ -124,22 +126,20 @@ def theories(request):
             logout(request)
             return redirect("/")
 
-        if request.method == 'POST' and 'export' in request.POST:
-            # Create the HttpResponse object with the appropriate CSV header.
+        if 'export' in request.POST:
+
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = f'attachment; filename="pruefungen{dt.datetime.today().date()}.csv"'
             writer = csv.writer(response)
             writer.writerow(['Name', 'Vorname', 'Lernerfolg', 'Anrufdatum'])
 
             # Fetch the data from the database
-            pruefungTheorie = PrüflingeTheorie.objects.all().values_list('name', 'vorname', 'lernerfolg', 'anrufdatum')
+            pruefungTheorie = PrüflingeTheorie.objects.all().order_by('anrufdatum', '-lernerfolg').values_list('name', 'vorname', 'lernerfolg', 'anrufdatum')
 
             for item in pruefungTheorie:
                 writer.writerow(item)
-
             return response
-        else:
-            return HttpResponse(status=405)  # Method Not Allowed
+
 
 
     # Find the user with the highest lernerfolg for each date
