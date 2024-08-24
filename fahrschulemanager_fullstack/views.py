@@ -128,7 +128,6 @@ def theories(request):
             # Create the HttpResponse object with the appropriate CSV header.
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = f'attachment; filename="pruefungen{dt.datetime.today().date()}.csv"'
-
             writer = csv.writer(response)
             writer.writerow(['Name', 'Vorname', 'Lernerfolg', 'Anrufdatum'])
 
