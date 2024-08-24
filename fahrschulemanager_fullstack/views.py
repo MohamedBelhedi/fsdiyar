@@ -140,9 +140,6 @@ def theories(request):
                 writer.writerow(item)
             return response
 
-
-
-    # Find the user with the highest lernerfolg for each date
     date_max_lernerfolg = pruefungTheorie.values('anrufdatum').annotate(max_lernerfolg=Max('lernerfolg'))
     for item in date_max_lernerfolg:
         highlighted_user = pruefungTheorie.filter(

@@ -48,6 +48,11 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for prominence */
         }
 
+        .nav-item {
+            justify-content: space-around;
+            margin-left: 15px;
+        }
+
         @media screen and (max-width: 1678px) {
             img {
                 min-width: 50px;
