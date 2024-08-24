@@ -1,3 +1,4 @@
+import csv
 from datetime import datetime
 import datetime as dt
 
@@ -123,6 +124,25 @@ def theories(request):
             logout(request)
             return redirect("/")
 
+        if request.method == 'POST' and 'export' in request.POST:
+            # Create the HttpResponse object with the appropriate CSV header.
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = f'attachment; filename="pruefungen{dt.datetime.today().date()}.csv"'
+
+            writer = csv.writer(response)
+            writer.writerow(['Name', 'Vorname', 'Lernerfolg', 'Anrufdatum'])
+
+            # Fetch the data from the database
+            pruefungTheorie = PrüflingeTheorie.objects.all().values_list('name', 'vorname', 'lernerfolg', 'anrufdatum')
+
+            for item in pruefungTheorie:
+                writer.writerow(item)
+
+            return response
+        else:
+            return HttpResponse(status=405)  # Method Not Allowed
+
+
     # Find the user with the highest lernerfolg for each date
     date_max_lernerfolg = pruefungTheorie.values('anrufdatum').annotate(max_lernerfolg=Max('lernerfolg'))
     for item in date_max_lernerfolg:
@@ -164,3 +184,5 @@ def pruefung(request):
     }
 
     return render(request, 'prüfungen.html', context)
+
+

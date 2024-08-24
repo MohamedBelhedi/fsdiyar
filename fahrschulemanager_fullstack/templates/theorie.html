@@ -54,6 +54,12 @@
                             <button class="btn btn-danger" type="submit" name="logout">Abmelden</button>
                         </form>
                     </li>
+                    <li class="nav-item" style="display: flex; align-content: flex-end; float: right">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-warning" type="submit" name="export">Export</button>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </nav>
