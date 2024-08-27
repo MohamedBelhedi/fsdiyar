@@ -6,7 +6,6 @@ from django.db.models import Max
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, logout
-from pyjsparser.parser import null
 
 from .forms import Pruefung, TheorieForm
 from .models import TüvTermine, Prüflinge, AktuellePrüfungListe, PrüflingeTheorie
