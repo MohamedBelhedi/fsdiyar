@@ -1,0 +1,40 @@
+Date: 12/1/2025
+Time: 7:9
+Group ID: FS-Diyar
+Message: Moin
+--------------------
+Date: 12/1/2025
+Time: 7:11
+Group ID: FS-Diyar
+Message: Moin
+--------------------
+Date: 12/1/2025
+Time: 7:12
+Group ID: FS-Diyar
+Message: Moin
+--------------------
+Date: 12/1/2025
+Time: 7:37
+Group ID: KS1GVUvBxDKFvbm686Olvx
+Message: Bitte einmal anmelden über die App für den<QuerySet [<TüvTermine: Prüfung am und um : 2025-01-17 08:00:00, Anzahl der Prüfung: 3>]>
+--------------------
+Date: 12/1/2025
+Time: 7:38
+Group ID: KS1GVUvBxDKFvbm686Olvx
+Message: Bitte einmal anmelden über die App für den<QuerySet [<TüvTermine: Prüfung am und um : 2025-01-17 08:00:00, Anzahl der Prüfung: 3>]>
+--------------------
+Date: 12/1/2025
+Time: 7:49
+Group ID: KS1GVUvBxDKFvbm686Olvx
+Message: Bitte einmal anmelden über die App für den2025-01-17 3 Prüfungen
+--------------------
+Date: 12/1/2025
+Time: 7:52
+Group ID: KS1GVUvBxDKFvbm686Olvx
+Message: Bitte einmal anmelden ueber die App für den: 17.01.2025 3 Pruefungen
+--------------------
+Date: 12/1/2025
+Time: 7:53
+Group ID: KS1GVUvBxDKFvbm686Olvx
+Message: Bitte einmal anmelden ueber die App (https://fsdiyar.onrender.com/) fuer den: 17.01.2025 3 Pruefungen
+--------------------
