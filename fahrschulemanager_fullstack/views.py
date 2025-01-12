@@ -38,6 +38,7 @@ def index_view(request):
 @csrf_exempt
 def home(request):
     prftexterr = ""
+    pruefungTuev = TüvTermine.objects.all()
     pruefung = TüvTermine.objects.all()
     prueflinge = Prüflinge.objects.all()
     prfl = [p.name for p in prueflinge]
@@ -56,7 +57,6 @@ def home(request):
         return redirect("/")
 
     if request.method == "POST":
-        pruefungTuev = TüvTermine.objects.all()
         form = Pruefung(request.POST, user=request.user)
         date = request.POST.get('prüfungsdatum')
         prfname = request.POST.get('name')
@@ -86,11 +86,20 @@ def home(request):
                     prftexterr = f"""Keine Prüfung Mehr für den {date} melde dich bitte im Büro"""
             else:
                 prftexterr = f"""Keine Prüfung für das Datum {date} gefunden"""
-    if request.method == "POST" and "whatsapp" in request.POST:
-        for items in pruefungTuev:
-            print(items.date)
-            pywhatkit.sendwhatmsg_to_group_instantly("KS1GVUvBxDKFvbm686Olvx",
-                                                     f"Bitte einmal anmelden ueber die App (https://fsdiyar.onrender.com/) fuer den: {items.date.strftime("%d.%m.%Y")} {items.text_event} Pruefungen")
+    try:
+        if pruefungTuev is not None:
+            if request.method == "POST" and "whatsapp" in request.POST:
+                for items in pruefungTuev:
+                    print(items.date)
+                    pywhatkit.sendwhatmsg_to_group_instantly("KS1GVUvBxDKFvbm686Olvx",
+                                                             f"Bitte einmal anmelden ueber die App (https://fsdiyar.onrender.com/) fuer den: {items.date.strftime("%d.%m.%Y")} {items.text_event} Pruefungen")
+        else:
+             prftexterr = 'Kann nicht benachrichtigt werden, da keine Prüfungstermin steht'
+    except Exception as e :
+        if pruefungTuev is None:
+            prftexterr = "Keine Prüfung"
+            print(e)
+
     context = {
         "pruefung": pruefung,
         "form": form,
