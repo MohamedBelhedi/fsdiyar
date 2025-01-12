@@ -55,6 +55,7 @@
                             <th scope="col">Beginn am und um</th>
                         </tr>
                     </thead>
+                    {% if prüfungen is  '' %}
                     <tbody>
                         {% for item in prüfungen %}
                         <tr>
@@ -64,6 +65,9 @@
                         </tr>
                         {% endfor %}
                     </tbody>
+                    {% else %}
+                        <h1>Keine Akutelle Prüfung</h1>
+                    {% endif %}
                 </table>
             </div>
         </div>

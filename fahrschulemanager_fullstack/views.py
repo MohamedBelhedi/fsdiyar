@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime
 import datetime as dt
+import pywhatkit
 
 from django.db.models import Max
 from django.http import HttpResponse, JsonResponse
@@ -96,6 +97,7 @@ def home(request):
 @csrf_exempt
 def theories(request):
     pruefungTheorie = PrüflingeTheorie.objects.all().order_by('anrufdatum', '-lernerfolg')
+    pruefungTuev = TüvTermine.objects.all()
     theorieForm = TheorieForm()
     achtungText = ''
     highlighted_users = set()
@@ -153,6 +155,11 @@ def theories(request):
         if datePrf > str(datum.anrufdatum):
             PrüflingeTheorie.objects.filter(anrufdatum=datum.anrufdatum).delete()
 
+    if request.method == "POST" and "whatsapp" in request.POST:
+        for items in pruefungTuev:
+            print(items.date)
+            pywhatkit.sendwhatmsg_to_group_instantly("KS1GVUvBxDKFvbm686Olvx", f"Bitte einmal anmelden ueber die App (https://fsdiyar.onrender.com/) fuer den: {items.date.strftime("%d.%m.%Y")} {items.text_event} Pruefungen")
+
     context = {
         "pruefungTheorie": pruefungTheorie,
         "theoieForm": theorieForm,
@@ -173,6 +180,7 @@ def pruefung(request):
             if date > str(datum.prüfungsdatum):
                 prüfungen.filter(prüfungsdatum=str(datum.prüfungsdatum)).delete()
                 print('test', datum.prüfungsdatum, date)
+
 
     context = {
         "prüfungen": prüfungen
