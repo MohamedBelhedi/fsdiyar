@@ -158,7 +158,8 @@ def theories(request):
     if request.method == "POST" and "whatsapp" in request.POST:
         for items in pruefungTuev:
             print(items.date)
-            pywhatkit.sendwhatmsg_to_group_instantly("KS1GVUvBxDKFvbm686Olvx", f"Bitte einmal anmelden ueber die App (https://fsdiyar.onrender.com/) fuer den: {items.date.strftime("%d.%m.%Y")} {items.text_event} Pruefungen")
+            #pywhatkit.sendwhatmsg_to_group_instantly("KS1GVUvBxDKFvbm686Olvx", f"Bitte einmal anmelden ueber die App (https://fsdiyar.onrender.com/) fuer den: {items.date.strftime("%d.%m.%Y")} {items.text_event} Pruefungen")
+            pywhatkit.sendwhatmsg_to_group_instantly("KS1GVUvBxDKFvbm686Olvx", items.date.strftime("%d.%m.%Y") + items.text_event )
 
     context = {
         "pruefungTheorie": pruefungTheorie,
