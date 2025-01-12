@@ -3,3 +3,6 @@ django_import_export==4.0.1
 import_export==0.3.1
 pywhatkit==5.4
 gunicorn==22.0.0
+whitenoise==6.6.0
+
+
