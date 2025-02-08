@@ -1,5 +1,4 @@
-from django.db.models import TimeField
-from django.forms import DateInput, TextInput
+from django.forms import DateInput, TextInput, TimeInput
 from .models import Prüflinge, TüvTermine, PrüflingeTheorie, BlockUnterrichtSchueler
 from django import forms
 
@@ -50,5 +49,5 @@ class SchuelerBlockUnterricht(forms.ModelForm):
             "vorname": TextInput(attrs={'class': 'form-control'}),
             "thema": TextInput(attrs={'class': 'form-control'}),
             "datum": DateInput(attrs={'class': 'form-control', 'type': 'date'}, format='%Y-%m-%d'),
-            "uhrzeit": TextInput(attrs={'class': 'form-control'})
+            "uhrzeit": TimeInput(attrs={'class': 'form-control', 'type': 'time'}, format='%H:%M'),
         }
