@@ -10,4 +10,6 @@ urlpatterns = [
 
     path('theorie/', views.theories, name='theorie'),
 
+    path('blockunterricht/', views.blockunterricht, name='blockunterricht'),
+
 ]

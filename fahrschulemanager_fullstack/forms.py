@@ -1,5 +1,6 @@
+from django.db.models import TimeField
 from django.forms import DateInput, TextInput
-from .models import Prüflinge, TüvTermine, PrüflingeTheorie
+from .models import Prüflinge, TüvTermine, PrüflingeTheorie, BlockUnterrichtSchueler
 from django import forms
 
 class AnmeldeForms(forms.ModelForm):
@@ -38,4 +39,16 @@ class Pruefung(forms.ModelForm):
             "name": forms.TextInput(attrs={'class': 'form-control'}),
             "bezahlt": forms.TextInput(attrs={'class': 'form-control'}),
             "prüfungsdatum": forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}, format='%Y-%m-%d')
+        }
+
+class SchuelerBlockUnterricht(forms.ModelForm):
+    class Meta:
+        model = BlockUnterrichtSchueler
+        fields = "__all__"
+        widgets = {
+            "name": TextInput(attrs={'class': 'form-control'}),
+            "vorname": TextInput(attrs={'class': 'form-control'}),
+            "thema": TextInput(attrs={'class': 'form-control'}),
+            "datum": DateInput(attrs={'class': 'form-control', 'type': 'date'}, format='%Y-%m-%d'),
+            "uhrzeit": TextInput(attrs={'class': 'form-control'})
         }

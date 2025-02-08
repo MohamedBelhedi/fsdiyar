@@ -8,8 +8,8 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, logout
 
-from .forms import Pruefung, TheorieForm
-from .models import TüvTermine, Prüflinge, AktuellePrüfungListe, PrüflingeTheorie
+from .forms import Pruefung, TheorieForm, SchuelerBlockUnterricht
+from .models import TüvTermine, Prüflinge, AktuellePrüfungListe, PrüflingeTheorie, BlockUnterricht, BlockUnterrichtSchueler
 from django.views.decorators.csrf import csrf_exempt
 
 date = dt.datetime.today().strftime('%Y-%m-%d')
@@ -198,4 +198,25 @@ def pruefung(request):
 
     return render(request, 'prüfungen.html', context)
 
+@csrf_exempt
+def blockunterricht(request):
+    blockunterrichte = BlockUnterricht.objects.all()
+    schuelerBlockForms = SchuelerBlockUnterricht()
 
+    if request.method == "POST":
+        schuelerBlockForms = SchuelerBlockUnterricht(request.POST)
+        if 'anmelden' in request.POST:
+            request.POST.get('name')
+            request.POST.get('vorname')
+            request.POST.get('thema')
+            request.POST.get('datum')
+            request.POST.get('zeit')
+
+            if schuelerBlockForms.is_valid():
+                schuelerBlockForms.save()
+                schuelerBlockForms.clean()
+    context = {
+        "blockunterrichte": blockunterrichte,
+        "schuelerBlockForms": schuelerBlockForms
+    }
+    return render(request, 'blockunterricht.html', context)

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blockunterricht</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="{% static 'styles/styles.css' %}" rel="stylesheet">
+</head>
+<body style="background: #cecece">
+
+
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="mb-4">
+            <h1>Willkommen hier findest du alle Blockunterricht</h1>
+            <h5>Seit dem jahre 202x muss jeder Fahrschüler die gesetzlichen Vorlagen von 14 x 90 mi Theorie Stunden,
+                sondern auch zu jedem Thema da gewesen sein, aber wäre wir nicht Fahrschule Diyar wenn wir nicht eine Lösung Parat hätten,
+                unten stehen alle kommenden Blockunterrichte, dort könnt ihr euch über das unten steheden Formular anmleden.
+                Bitte beachtet, dass die Teilnehmerzahl auf x begrenzt ist.
+            </h5>
+            <div class="table-responsive">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">Thema</th>
+                            <th scope="col">Datum und Uhrzeiten</th>
+                        </tr>
+                    </thead>
+                    {% if blockunterrichte is not '' %}
+                    <tbody>
+                        {% for item in blockunterrichte %}
+                        <tr>
+                            <td>{{ item.text_event }}</td>
+                            <td>{{ item.date }}, {{ item.uhrzeit }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    {% else %}
+                        <h1>Keine Akutelle Blockunterrichte vorhanden</h1>
+                    {% endif %}
+                </table>
+            </div>
+        
+        <div class="row justify-content-center mb-4">
+            <form id="form" method="POST" class="col-12 col-md-8">
+                {% csrf_token %}
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Name</label>
+                        {{ schuelerBlockForms.name }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Vorname</label>
+                        {{ schuelerBlockForms.vorname}}
+                    </div>  
+                    
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Thema</label>
+                        {{ schuelerBlockForms.thema}}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="prüfungsdatum" class="form-label">Datum</label>
+                        {{ schuelerBlockForms.datum }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="prüfungsdatum" class="form-label">Uhrzeit</label>
+                        {{ schuelerBlockForms.uhrzeit }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary" name="anmelden">Eintragen</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+        
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+</body>
+</html>
