@@ -5,6 +5,10 @@
             --primary-color: #3a4052;
         }
 
+        a {
+            text-decoration: none;
+        }
+
         .logo-container {
             position: absolute;
             top: 0;
