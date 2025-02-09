@@ -1,86 +1,136 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blockunterricht</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'styles/styles.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background: #cecece;
+            min-height: 100vh;
+        }
+        .main-container {
+            max-width: 1200px;
+            padding: 2rem 1rem;
+        }
+        .info-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 2rem 0;
+        }
+        .table-custom {
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .form-section {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
-<body style="background: #cecece">
-
-
-    <div class="d-flex justify-content-center align-items-center">
-        <div class="mb-4">
-            <h1>Willkommen hier findest du alle Blockunterricht</h1>
-            <h5>Seit dem jahre 202x muss jeder Fahrschüler die gesetzlichen Vorlagen von 14 x 90 mi Theorie Stunden,
-                sondern auch zu jedem Thema da gewesen sein, aber wäre wir nicht Fahrschule Diyar wenn wir nicht eine Lösung Parat hätten,
-                unten stehen alle kommenden Blockunterrichte, dort könnt ihr euch über das unten steheden Formular anmleden.
-                Bitte beachtet, dass die Teilnehmerzahl auf x begrenzt ist.
-            </h5>
-            <div class="table-responsive">
-                <table class="table table-dark">
-                    <thead>
-                        <tr>
-                            <th scope="col">Thema</th>
-                            <th scope="col">Datum und Uhrzeiten</th>
-                        </tr>
-                    </thead>
-                    {% if blockunterrichte is not '' %}
-                    <tbody>
-                        {% for item in blockunterrichte %}
-                        <tr>
-                            <td>{{ item.text_event }}</td>
-                            <td>{{ item.date }}, {{ item.uhrzeit }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                    {% else %}
-                        <h1>Keine Akutelle Blockunterrichte vorhanden</h1>
-                    {% endif %}
-                </table>
+<body>
+    <div class="container main-container">
+        <div class="text-center mb-5">
+            <h1 class="display-4 mb-4 fw-bold">Blockunterricht Übersicht</h1>
+            <div class="info-text">
+                <p>Seit dem Jahr 202x muss jeder Fahrschüler die gesetzlich vorgeschriebenen 14 x 90 Minuten Theorie-Stunden absolvieren und bei jedem Thema anwesend gewesen sein.</p>
+                <p>Unten finden Sie alle kommenden Blockunterrichte. Bitte melden Sie sich über das Anmeldeformular an. Beachten Sie die begrenzte Teilnehmerzahl.</p>
             </div>
+        </div>
 
-        <div class="row justify-content-center mb-4">
-            <div class="row justify-content-center mb-4" style="color: crimson">{{ errorMessage }}</div>
-            <form id="form" method="POST" class="col-12 col-md-8">
+        <div class="table-responsive">
+            {% if blockunterrichte %}
+            <table class="table table-custom table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="w-50">Thema</th>
+                        <th scope="col">Termin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in blockunterrichte %}
+                    <tr>
+                        <td>{{ item.text_event }}</td>
+                        <td>{{ item.date|date:"d.m.Y" }}, {{ item.uhrzeit|time:"H:i" }} Uhr</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="alert alert-info text-center">
+                Aktuell sind keine Blockunterrichte verfügbar
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-section">
+            <h2 class="mb-4 text-center">Anmeldeformular</h2>
+            
+            {% if errorMessage %}
+            <div class="alert alert-danger text-center mb-4">{{ errorMessage }}</div>
+            {% endif %}
+
+            <form method="POST" class="needs-validation" novalidate>
                 {% csrf_token %}
-                <div class="row mb-3">
+                <div class="row g-3">
                     <div class="col-md-6">
-                        <label for="name" class="form-label">Name</label>
+                        <label for="id_vorname" class="form-label">Vorname</label>
+                        {{ schuelerBlockForms.vorname }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_name" class="form-label">Nachname</label>
                         {{ schuelerBlockForms.name }}
                     </div>
-
-                    <div class="col-md-6">
-                        <label for="name" class="form-label">Vorname</label>
-                        {{ schuelerBlockForms.vorname}}
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="name" class="form-label">Thema</label>
-                        {{ schuelerBlockForms.thema}}
-                    </div>
-
-                    <div class="col-md-2">
-                        <label for="prüfungsdatum" class="form-label">Datum von bis</label>
-                        <div style="display: flex; gap: 10px">{{ schuelerBlockForms.datumthemaA }} - {{ schuelerBlockForms.datumthemaB }} - {{ schuelerBlockForms.datumthemaC }} </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="prüfungsdatum" class="form-label">Uhrzeit Thema Termin 1</label>
-                        <div style="display: flex; gap: 10px">{{ schuelerBlockForms.uhrzeitA }} - {{ schuelerBlockForms.uhrzeitB }} - {{ schuelerBlockForms.uhrzeitC }} </div>
-                    </div>
-                </div>
-                <div class="row">
+                    
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary" name="anmelden">Eintragen</button>
+                        <label class="form-label">Gewünschtes Thema</label>
+                        {{ schuelerBlockForms.thema }}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Datum 1</label>
+                        {{ schuelerBlockForms.datumthemaA }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Datum 2</label>
+                        {{ schuelerBlockForms.datumthemaB }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Datum 3</label>
+                        {{ schuelerBlockForms.datumthemaC }}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Uhrzeit 1</label>
+                        {{ schuelerBlockForms.uhrzeitA }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Uhrzeit 2</label>
+                        {{ schuelerBlockForms.uhrzeitB }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Uhrzeit 3</label>
+                        {{ schuelerBlockForms.uhrzeitC }}
+                    </div>
+
+                    <div class="col-12 text-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg px-5" name="anmelden">
+                            Anmelden
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
-        </div>
-
     </div>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
