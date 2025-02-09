@@ -182,6 +182,7 @@ def theories(request):
 @csrf_exempt
 def pruefung(request):
     prüfungen = AktuellePrüfungListe.objects.all()
+
     if request.method == "POST" and 'logout' in request.POST:
         logout(request)
         return redirect("/")
@@ -204,11 +205,15 @@ def blockunterricht(request):
     blockunterrichte = BlockUnterricht.objects.all()
     schuelerBlockForms = SchuelerBlockUnterricht()
     blockUnterrichtCount = BlockUnterrichtSchueler.objects.count()
-    print(blockUnterrichtCount)
+
+    if request.method == 'GET':
+        for datum in blockunterrichte:
+            if datePrfl > str(datum.date):
+                blockunterrichte.filter(date=str(datum.date)).delete()
 
     if request.method == "POST":
         schuelerBlockForms = SchuelerBlockUnterricht(request.POST)
-        if blockUnterrichtCount < 1 and 'anmelden' in request.POST:
+        if blockUnterrichtCount <= 36 and 'anmelden' in request.POST:
             request.POST.get('name')
             request.POST.get('vorname')
             request.POST.get('thema')
