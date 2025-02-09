@@ -1,7 +1,6 @@
 import csv
 from datetime import datetime
 import datetime as dt
-import pywhatkit
 
 from django.db.models import Max
 from django.http import HttpResponse, JsonResponse
