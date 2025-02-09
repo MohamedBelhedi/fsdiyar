@@ -103,6 +103,7 @@ def home(request):
         "pruefung": pruefung,
         "form": form,
         "prftexterr": prftexterr,
+        "pruefungtuev": pruefungTuev,
     }
     return render(request, "home.html", context)
 
