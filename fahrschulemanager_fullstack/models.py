@@ -52,7 +52,11 @@ class BlockUnterrichtSchueler(models.Model):
     name = models.CharField(blank=False, max_length=255)
     vorname = models.CharField(blank=False, max_length=255)
     thema = models.CharField(blank=False, max_length=255)
-    datum = models.DateField(blank=False, null=False)
-    uhrzeit = models.TimeField(blank=False, null=True)
-    def __str__(self):
-        return f"Schüler Liste Block Unterricht : {self.name} {self.vorname}, Thema: {self.thema}, Datum: {self.datum}, Uhrzeit: {self.uhrzeit}"
+    datumthemaA = models.DateField(blank=True, null=True)
+    datumthemaB = models.DateField(blank=True, null=True)
+    datumthemaC = models.DateField(blank=True, null=True)
+    uhrzeitA = models.TimeField(blank=True, null=True)
+    uhrzeitB = models.TimeField(blank=True, null=True)
+    uhrzeitC = models.TimeField(blank=True, null=True)
+
+

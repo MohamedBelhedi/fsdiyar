@@ -66,4 +66,4 @@ class BlockUnterrichtResource(ImportExportModelAdmin):
 @admin.register(BlockUnterrichtSchueler)
 class BlockUnterrichtSchuelerResource(ImportExportModelAdmin):
     resource_class = SchuelerBlockUnterrichtResource
-    list_display = ('name', 'vorname', 'thema', 'datum', 'uhrzeit')
+    list_display = ('name', 'vorname', 'thema', 'datumthemaA', 'datumthemaB','datumthemaC', 'uhrzeitA', 'uhrzeitB', 'uhrzeitC')

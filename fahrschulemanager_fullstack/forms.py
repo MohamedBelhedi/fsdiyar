@@ -48,6 +48,10 @@ class SchuelerBlockUnterricht(forms.ModelForm):
             "name": TextInput(attrs={'class': 'form-control'}),
             "vorname": TextInput(attrs={'class': 'form-control'}),
             "thema": TextInput(attrs={'class': 'form-control'}),
-            "datum": DateInput(attrs={'class': 'form-control', 'type': 'date'}, format='%Y-%m-%d'),
-            "uhrzeit": TimeInput(attrs={'class': 'form-control', 'type': 'time'}, format='%H:%M'),
+            "datumthemaA": DateInput(attrs={'class': 'form-control', 'type': 'date'}, format='%Y-%m-%d'),
+            "datumthemaB": DateInput(attrs={'class': 'form-control', 'type': 'date'}, format='%Y-%m-%d'),
+            "datumthemaC": DateInput(attrs={'class': 'form-control', 'type': 'date'}, format='%Y-%m-%d'),
+            "uhrzeitA": TimeInput(attrs={'class': 'form-control', 'type': 'time'}, format='%H:%M'),
+            "uhrzeitB": TimeInput(attrs={'class': 'form-control', 'type': 'time'}, format='%H:%M'),
+            "uhrzeitC": TimeInput(attrs={'class': 'form-control', 'type': 'time'}, format='%H:%M')
         }

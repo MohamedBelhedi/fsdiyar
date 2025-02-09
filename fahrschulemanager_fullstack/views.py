@@ -200,12 +200,15 @@ def pruefung(request):
 
 @csrf_exempt
 def blockunterricht(request):
+    errorMessage = ''
     blockunterrichte = BlockUnterricht.objects.all()
     schuelerBlockForms = SchuelerBlockUnterricht()
+    blockUnterrichtCount = BlockUnterrichtSchueler.objects.count()
+    print(blockUnterrichtCount)
 
     if request.method == "POST":
         schuelerBlockForms = SchuelerBlockUnterricht(request.POST)
-        if 'anmelden' in request.POST:
+        if blockUnterrichtCount < 1 and 'anmelden' in request.POST:
             request.POST.get('name')
             request.POST.get('vorname')
             request.POST.get('thema')
@@ -215,8 +218,11 @@ def blockunterricht(request):
             if schuelerBlockForms.is_valid():
                 schuelerBlockForms.save()
                 schuelerBlockForms.clean()
+        else:
+            errorMessage = """ Leider sind die Kurse voll bitte versuche es für die Nächste Woche oder ruf uns an"""
     context = {
         "blockunterrichte": blockunterrichte,
-        "schuelerBlockForms": schuelerBlockForms
+        "schuelerBlockForms": schuelerBlockForms,
+        "errorMessage": errorMessage
     }
     return render(request, 'blockunterricht.html', context)
