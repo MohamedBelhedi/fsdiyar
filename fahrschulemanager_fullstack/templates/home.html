@@ -113,7 +113,7 @@
                     {% csrf_token %}
                     <label>Die Fahrlehrer Benachrichtigen</label>
                   <div>
-                      <button class="fa fa-whatsapp" style="font-size:50px;color:forestgreen" name="whatsapp"></button>
+                      <button class="fa fa-whatsapp" id="wa" style="font-size:50px;color:forestgreen" name="whatsapp"></button>
                   </div>
 
                 </form>
@@ -126,7 +126,13 @@
         <a href="/">Zurück zum Login</a>
     </div>
 {% endif %}
+    <script>
+        const wa = document.getElementById('wa');
 
+        wa.addEventListener('click', () => {
+            window.location.open('https://wa.me/+4917642933195')
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
